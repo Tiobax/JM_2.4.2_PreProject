@@ -5,12 +5,10 @@
     <title>Users</title>
 </head>
 <body>
-<button>
-    <a th:href="@{users/new}">Добавить нового пользователя</a>
-</button>
-
-<h2></h2>
-
+<form th:method="GET" th:action="@{/new}">
+    <input type="submit" value="Add new user">
+</form>
+<br>
 <table border="1">
     <tbody>
         <tr>
@@ -27,13 +25,13 @@
                 <td th:text="${user.first_name}"></td>
                 <td th:text="${user.last_name}"></td>
                 <td th:text="${user.age}"></td>
-                <td><button><a th:href="@{users/edit/{id}(id=${user.id})}">edit</a></button></td>
                 <td>
-                    <form th:method="DELETE" th:action="@{/users}" th:object="${postUser}">
-                        <input type="text" value="${user.id}" th:field="*{id}" >
-                        <input type="text" value="${user.first_name}" th:field="*{first_name}" >
-                        <input type="text" value="${user.last_name}" th:field="*{last_name}" >
-                        <input type="text" value="${user.age}" th:field="*{age}" >
+                    <form th:method="GET" th:action="@{/edit/{id}(id=${user.id})}">
+                        <input type="submit" value="edit">
+                    </form>
+                </td>
+                <td>
+                    <form th:method="DELETE" th:action="@{/{id}(id=${user.id})}">
                         <input type="submit" value="delete">
                     </form>
                 </td>
