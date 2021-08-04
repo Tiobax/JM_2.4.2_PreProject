@@ -9,7 +9,7 @@
     <input type="submit" value="Logout">
 </form>
 <br>
-<form th:method="PATCH" th:action="@{/admin}" th:object="${user}">
+<form th:method="PUT" th:action="@{/admin}" th:object="${user}">
     <input type="hidden" th:field="*{id}">
     <label for="email">Email</label>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

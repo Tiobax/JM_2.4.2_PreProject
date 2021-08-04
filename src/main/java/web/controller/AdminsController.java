@@ -23,14 +23,11 @@ import java.util.stream.Collectors;
 public class AdminsController {
     private final UsersService usersService;
     private final RoleService roleService;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AdminsController(UsersService usersService,
-                            PasswordEncoder passwordEncoder,
                             RoleService roleService) {
         this.usersService = usersService;
-        this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
     }
 
@@ -47,19 +44,13 @@ public class AdminsController {
 
     @PostMapping
     public String createUser(@ModelAttribute @Valid User user,
-                             BindingResult bindingResult,
                              @RequestParam(required = false) String[] role) {
-
-        if (bindingResult.hasErrors()) {
-            return "admins/new";
-        }
 
         Set<Role> roleSet = new HashSet<>();
         if (role != null) {
             roleSet = Arrays.stream(role).map(roleService::getRoleByName).collect(Collectors.toSet());
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roleSet);
         usersService.creatUser(user);
         return "redirect:/admin";
@@ -71,21 +62,15 @@ public class AdminsController {
         return "admins/edit";
     }
 
-    @PatchMapping()
+    @PutMapping()
     public String updateUser(@ModelAttribute @Valid User user,
-                             BindingResult bindingResult,
                              @RequestParam(required = false) String[] role) {
-
-        if (bindingResult.hasErrors()) {
-            return "admins/edit";
-        }
 
         Set<Role> roleSet = new HashSet<>();
         if (role != null) {
             roleSet = Arrays.stream(role).map(x -> roleService.getRoleByName(x)).collect(Collectors.toSet());
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roleSet);
         usersService.updateUser(user);
         return "redirect:/admin";
