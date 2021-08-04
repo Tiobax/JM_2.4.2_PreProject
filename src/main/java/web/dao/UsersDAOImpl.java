@@ -6,6 +6,7 @@ import web.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UsersDAOImpl implements UsersDAO {
@@ -20,6 +21,12 @@ public class UsersDAOImpl implements UsersDAO {
     @Override
     public User readUser(int id) {
         return entityManager.find(User.class, id);
+    }
+
+    @Override
+    public User readUserByLogin(String login) {
+        return (User) entityManager.createQuery("from User where email = :login")
+                .setParameter("login", login).getSingleResult();
     }
 
     @Override
